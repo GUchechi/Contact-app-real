@@ -1,0 +1,39 @@
+{
+  "contacts": [
+    {
+      "id": "3188a998-ecdc-4a6b-b16b-42db6c1e3593",
+      "name": "Godswill",
+      "email": "godswilluchendu7@gmail.com"
+    },
+    {
+      "id": "01e3a20a-6872-4d92-a0aa-0e6d5eb7e168",
+      "name": "Wizard",
+      "email": "wizardly419@gmail.com"
+    },
+    {
+      "id": "2cec3e19-dd3f-4cf3-986c-519e1f07696d",
+      "name": "Ezinne",
+      "email": "ezinne@gmail.com"
+    },
+    {
+      "id": "76978ca6-0942-4cdf-9437-ed6b018f344b",
+      "name": "Chiboy",
+      "email": "chiboy234@gmail.com"
+    },
+    {
+      "id": "185d2ca2-412a-4222-815a-e4ef01d1475c",
+      "name": "Njoku, Godswill Uchendu",
+      "email": "godswilluche7@gmail.com"
+    },
+    {
+      "id": "826de851-1ae9-4949-9d65-37be7d5a6ed6",
+      "name": "Beauty",
+      "email": "beauty190@gmail.com"
+    },
+    {
+      "id": "29853721-0aae-43a5-82e2-bc9e389c45b3",
+      "name": "Kalu",
+      "email": "kalu@gmail.com"
+    }
+  ]
+}
