@@ -1,19 +1,17 @@
 import React,{useRef} from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { contactsCrudContext } from '../context/ContactsCrudContext'
 import ContactCard from './ContactCard'
 
-const ContactList = ({contacts, term, searchKeyword}) => {
+const ContactList = ({ term, searchKeyword}) => {
+  const {contacts} = useContext(contactsCrudContext)
   const inputEl = useRef(null)
-
-    const deleteContactHandler = (id) => {
-        contacts.getContactId(id);
-      };
 
     const renderContacts = contacts.map((contact) => {
         return (
            <ContactCard 
              contact={contact}
-              clickHandler={deleteContactHandler}
               key={contact.id}
              />
         )

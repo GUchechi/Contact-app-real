@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate} from 'react-router-dom'
+import { useContext } from 'react'
+import { contactsCrudContext } from '../context/ContactsCrudContext'
 
-const AddContact = ({addContactHandler}) => {
+
+const AddContact = () => {
+  const {addContactHandler} = useContext(contactsCrudContext)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const navigate = useNavigate();

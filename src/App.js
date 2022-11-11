@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { BrowserRouter as Router, Route , Routes} from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid'
+
 import './App.css';
 import AddContact from './components/AddContact';
 import EditContact from './components/EditContact';
 import ContactList from './components/ContactList';
 import Header from './components/Header';
 import ContactDetails from './components/ContactDetails';
-import api from "../src/api/contacts";
+import { ContactsCrudContextProvider } from './context/ContactsCrudContext';
+import api from '../src/api/contacts'
 
 function App() {
   const LOCAL_STORAGE_KEY = "contacts";
@@ -16,31 +17,9 @@ function App() {
  const [searchTerm, setSearchTerm] = useState("")
  const [searchResult, setSearchResult] = useState([])
 
-//  Fetch All Data
-const retrieveContacts = async() => {
-  const response = await api.get("/contacts")
-  return response.data;
-}
 
-// Create Data
- const addContactHandler = async (contact) => {
-  const request = {
-    id: uuidv4(), 
-    ...contact,
-  }
-  const response = await api.post("/contacts", request)
-    setContacts([...contacts, response.data])
- }
 
-//  Delete Data
- const removeContactHandler = async (id) => {
-  await api.delete(`/contacts/${id}`);
-  const newContactList = contacts.filter((contact) => {
-    return contact.id !== id;
-  })
 
-  setContacts(newContactList);
- }
 
 //  UpdateContact 
 const updateContactHandler = async (contact) => {
@@ -64,17 +43,6 @@ const searchHandler = (searchTerm) => {
    }
 }
 
- useEffect(() => {
-  // const retrieveContacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-  //   if(retrieveContacts) setContacts(retrieveContacts)
-
-   const getAllContacts = async () => {
-    const allContacts = await retrieveContacts();
-    if(allContacts) setContacts(allContacts);
-   };
-
-   getAllContacts();
-},[])
 
  useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts))
@@ -84,21 +52,20 @@ const searchHandler = (searchTerm) => {
     <div className="ui container">
       <Header />
       <Router>
+      <ContactsCrudContextProvider>
         <Routes>
           <Route 
             exact
             path="/"
             element={<ContactList 
-            contacts={searchTerm.length < 1 ? contacts : searchResult}
-            getContactId={removeContactHandler}    
+            contacts={searchTerm.length < 1 ? contacts : searchResult}    
             term={searchTerm}
             searchKeyword={searchHandler}         
            />}
           />
           <Route 
             path="/add"
-            element={<AddContact 
-              addContactHandler={addContactHandler}/>}
+            element={<AddContact/>}
           />    
           <Route 
               path='/contact/:id' 
@@ -112,6 +79,7 @@ const searchHandler = (searchTerm) => {
             />}
           />    
         </Routes>
+        </ContactsCrudContextProvider>
       </Router>
     </div>
   );
