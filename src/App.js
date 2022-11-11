@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { BrowserRouter as Router, Route , Routes} from 'react-router-dom';
 
 import './App.css';
@@ -9,45 +7,8 @@ import ContactList from './components/ContactList';
 import Header from './components/Header';
 import ContactDetails from './components/ContactDetails';
 import { ContactsCrudContextProvider } from './context/ContactsCrudContext';
-import api from '../src/api/contacts'
 
 function App() {
-  const LOCAL_STORAGE_KEY = "contacts";
- const [contacts, setContacts] = useState([])
- const [searchTerm, setSearchTerm] = useState("")
- const [searchResult, setSearchResult] = useState([])
-
-
-
-
-
-//  UpdateContact 
-const updateContactHandler = async (contact) => {
-  const response = await api.put(`/contacts/${contact.id}`,contact)
-  const {id, name, email} = response.data
-  setContacts(
-      contacts.map((contact) => {
-    return contact.id === id || contact.name === name|| contact.email ===email ? {...response.data} : contact}))
-}
-
-// Search contacts
-const searchHandler = (searchTerm) => {
-   setSearchTerm(searchTerm);
-   if(searchTerm !== "") {
-    const newContactList = contacts.filter((contact) => {
-      return Object.values(contact).join(" ").toLowerCase().includes(searchTerm.toLowerCase());
-    })
-    setSearchResult(newContactList);
-   } else {
-    setSearchResult(contacts);
-   }
-}
-
-
- useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts))
- },[contacts])
-
   return (
     <div className="ui container">
       <Header />
@@ -57,10 +18,7 @@ const searchHandler = (searchTerm) => {
           <Route 
             exact
             path="/"
-            element={<ContactList 
-            contacts={searchTerm.length < 1 ? contacts : searchResult}    
-            term={searchTerm}
-            searchKeyword={searchHandler}         
+            element={<ContactList       
            />}
           />
           <Route 
@@ -69,14 +27,11 @@ const searchHandler = (searchTerm) => {
           />    
           <Route 
               path='/contact/:id' 
-              element={<ContactDetails 
-              contacts={contacts}/>} 
+              element={<ContactDetails/>} 
             />
           <Route 
             path="/edit"
-            element={<EditContact 
-              updateContactHandler={updateContactHandler}
-            />}
+            element={<EditContact />}
           />    
         </Routes>
         </ContactsCrudContextProvider>

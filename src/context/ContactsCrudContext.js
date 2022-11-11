@@ -6,6 +6,8 @@ export const contactsCrudContext = createContext({});
 
 export const ContactsCrudContextProvider = ({ children }) => {
     const [contacts, setContacts] = useState([])
+    const [searchTerm, setSearchTerm] = useState("")
+    const [searchResult, setSearchResult] = useState([])
 
     //  Fetch All Data and Retrieve All Data
     const retrieveContacts = async() => {
@@ -45,12 +47,43 @@ export const ContactsCrudContextProvider = ({ children }) => {
       setContacts([...contacts, response.data])
    }
 
+   //  UpdateContact 
+    const updateContactHandler = async (contact) => {
+    const response = await api.put(`/contacts/${contact.id}`,contact)
+    const id = response.data
+    setContacts(
+        contacts.map((contact) => {
+      return contact.id === id ? {...response.data} : contact}))
+  }
+  
+  // Search contacts
+const searchHandler = (searchTerm) => {
+    setSearchTerm(searchTerm);
+    if(searchTerm !== "") {
+     const newContactList = contacts.filter((contact) => {
+       return Object.values(contact).join(" ").toLowerCase().includes(searchTerm.toLowerCase());
+     })
+     setSearchResult(newContactList);
+    } else {
+     setSearchResult(contacts);
+    }
+ }
+ 
+
+
 //    Values
         const value = {
             contacts,
             retrieveContacts,
             removeContactHandler,
-            addContactHandler
+            addContactHandler,
+            updateContactHandler,
+            searchResult, 
+            setSearchResult,
+            searchTerm, 
+            setSearchTerm,
+            searchHandler,
+            setContacts
         }
 
    return (

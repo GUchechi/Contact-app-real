@@ -1,9 +1,12 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import user from "../images/user.jpg";
+import { useContext } from 'react'
+import { contactsCrudContext } from '../context/ContactsCrudContext'
 
 
-const ContactDetails = ({contacts}) => {
+const ContactDetails = () => {
+    const {contacts} = useContext(contactsCrudContext)
     const {id} = useParams();
     const contact = contacts.find(contact => (contact.id) === id);
   return (

@@ -1,14 +1,14 @@
-import React,{useRef} from 'react'
+import React from 'react'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { contactsCrudContext } from '../context/ContactsCrudContext'
 import ContactCard from './ContactCard'
 
-const ContactList = ({ term, searchKeyword}) => {
-  const {contacts} = useContext(contactsCrudContext)
-  const inputEl = useRef(null)
+const ContactList = () => {
+  const {contacts, searchResult, searchTerm, searchHandler} = useContext(contactsCrudContext)
 
-    const renderContacts = contacts.map((contact) => {
+
+    const renderContacts = (searchTerm.length < 1 ? contacts : searchResult).map((contact) => {
         return (
            <ContactCard 
              contact={contact}
@@ -17,8 +17,8 @@ const ContactList = ({ term, searchKeyword}) => {
         )
     })
 
-    const getSearchTerm = () => {
-      searchKeyword(inputEl.current.value)
+    const onUserSearch = (e) => {
+      searchHandler(e.target.value)
     }
   return (
     <div className="main">
@@ -32,10 +32,9 @@ const ContactList = ({ term, searchKeyword}) => {
             <input 
               type="text" 
               placeholder='Search Contacts' 
-              ref={inputEl}
               className="prompt"
-              value={term}
-              onChange={getSearchTerm}
+              value={searchTerm}
+              onChange={(e) => onUserSearch(e)}
                />
             <i className="ui icon search"></i>
           </div>

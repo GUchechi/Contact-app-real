@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate} from 'react-router-dom'
+import { useContext } from 'react'
+import { contactsCrudContext } from '../context/ContactsCrudContext'
 
-const EditContact = ({updateContactHandler}) => {
+const EditContact = (id) => {
+  const {updateContactHandler} = useContext(contactsCrudContext)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const navigate = useNavigate();
@@ -12,7 +15,7 @@ const EditContact = ({updateContactHandler}) => {
           alert("All fields are required!")
           return;
         }
-        updateContactHandler({name, email})
+        updateContactHandler({id,name, email})
         setName('')
         setEmail("")
         navigate("/")
